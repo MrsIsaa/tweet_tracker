@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 11 * * *'  # Runs at 11:00 AM UTC every day
     - cron: '0 14 * * *'  # Runs at 2:00 PM UTC every day
-    - cron: '0 21 * * *'  # Runs at 10:35 PM UTC every day
+    - cron: '28 21 * * *'  # Runs at 10:35 PM UTC every day
 
 jobs:
   run-script:
