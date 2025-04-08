@@ -2,13 +2,50 @@ name: Track Tweets
 
 on:
   schedule:
-  - cron: "0 11,14 * * *"
+  - cron: '0 11 * * *'
+  - cron: '0 14 * * *'
+  - cron: '35 22 * * *'
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
       - name: Install dependencies
         run: npm install
 
-      - name: Track Tweets
+      - name: Set up variables
+        run: |
+          echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" >> $GITHUB_ENV
+          echo "WEBHOOK_URL=${{ secrets.WEBHOOK_URL }}" >> $GITHUB_ENV
+          echo "AUTHOR_ID=${{ secrets.AUTHOR_ID }}" >> $GITHUB_ENV
+
+      - name: Create lastID.txt if not exists
+        run: |
+          if [ ! -f lastID.txt ]; then
+          echo "null" > lastID.txt
+          fi
+
+      - name: Get lastID artifact
+        uses: actions/download-artifact@v3
+        with: 
+          name: lastID-file
+        continue-on-error: true
+
+      - name: Upload lastID.txt as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: lastID-file
+          path: lastID.txt
+
+        
+      - name: Run Script
         run: node src/main.js
