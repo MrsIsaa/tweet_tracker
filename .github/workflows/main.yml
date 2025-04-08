@@ -40,11 +40,11 @@ jobs:
             echo "null" > lastID.txt  # Create lastID.txt with 'null' if it doesn't exist
           fi
 
+      - name: Run Script
+        run: node src/main.js
+
       - name: Upload lastID.txt as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: lastID-file
           path: lastID.txt
-
-      - name: Run Script
-        run: node src/main.js
