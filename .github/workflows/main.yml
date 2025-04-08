@@ -60,4 +60,10 @@ jobs:
       - name: Run Script
         run: node src/main.js
 
+      - name: Upload lastID.txt with ID
+        uses: actions/upload-artifact@v4
+        with:
+          name: lastID-file
+          path: lastID.txt
+
   
