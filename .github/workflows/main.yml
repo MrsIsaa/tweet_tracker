@@ -37,8 +37,18 @@ jobs:
       - name: Create lastID.txt if not exists
         run: |
           if [ ! -f lastID.txt ]; then
-            echo "null" > lastID.txt  # Create lastID.txt with 'null' if it doesn't exist
+            echo "null" > lastID.txt
+            echo "lastID.txt created with 'null'"
+          else
+            echo "lastID.txt already exists."
           fi
+  
+      - name: Debug
+        run: |
+          echo "Listing current directory:"
+          ls -l
+          echo "Contents of lastID.txt:"
+          cat lastID.txt || echo "lastID.txt not found"
 
       - name: Run Script
         run: node src/main.js
