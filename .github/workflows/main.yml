@@ -53,6 +53,7 @@ jobs:
       - name: Run Script
         run: node src/main.js
 
+      # Updated to @v4, instead of @v3
       - name: Upload lastID.txt as Artifact
         uses: actions/upload-artifact@v4
         with:
