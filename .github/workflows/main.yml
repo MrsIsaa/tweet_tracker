@@ -31,7 +31,7 @@ jobs:
       - name: Create lastID.txt if not exists
         run: |
           if [ ! -f lastID.txt ]; then
-          echo "null" > lastID.txt
+            echo "null" > lastID.txt
           fi
 
       - name: Get lastID artifact
