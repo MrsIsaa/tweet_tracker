@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 11 * * *'  # Runs at 11:00 AM UTC every day
     - cron: '0 14 * * *'  # Runs at 2:00 PM UTC every day
-    - cron: '43 21 * * *'  # Runs at 10:35 PM UTC every day
+    - cron: '52 21 * * *'  # Runs at 10:35 PM UTC every day
 
 jobs:
   run-script:
@@ -28,12 +28,6 @@ jobs:
           echo "WEBHOOK_URL=${{ secrets.WEBHOOK_URL }}" >> $GITHUB_ENV
           echo "AUTHOR_ID=${{ secrets.AUTHOR_ID }}" >> $GITHUB_ENV
 
-      - name: Get lastID artifact
-        uses: actions/download-artifact@v4
-        with: 
-          name: lastID-file
-        continue-on-error: true
-
       - name: Create lastID.txt if not exists
         run: |
           if [ ! -f lastID.txt ]; then
@@ -42,7 +36,20 @@ jobs:
           else
             echo "lastID.txt already exists."
           fi
-  
+
+      - name: Upload lastID.txt as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lastID-file
+          path: lastID.txt
+
+      - name: Get lastID artifact
+        uses: actions/download-artifact@v4
+        with: 
+          name: lastID-file
+        continue-on-error: true
+
+    
       - name: Debug
         run: |
           echo "Listing current directory:"
@@ -53,9 +60,4 @@ jobs:
       - name: Run Script
         run: node src/main.js
 
-      # Updated to @v4, instead of @v3
-      - name: Upload lastID.txt as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: lastID-file
-          path: lastID.txt
+  
