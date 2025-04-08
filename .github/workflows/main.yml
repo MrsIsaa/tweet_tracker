@@ -2,9 +2,9 @@ name: Track Tweets
 
 on:
   schedule:
-  - cron: '0 11 * * *'
-  - cron: '0 14 * * *'
-  - cron: '35 22 * * *'
+    - cron: '0 11 * * *'  # Runs at 11:00 AM UTC every day
+    - cron: '0 14 * * *'  # Runs at 2:00 PM UTC every day
+    - cron: '35 22 * * *'  # Runs at 10:35 PM UTC every day
 
 jobs:
   run-script:
@@ -31,7 +31,7 @@ jobs:
       - name: Create lastID.txt if not exists
         run: |
           if [ ! -f lastID.txt ]; then
-            echo "null" > lastID.txt
+            echo "null" > lastID.txt  # Create lastID.txt with 'null' if it doesn't exist
           fi
 
       - name: Get lastID artifact
@@ -46,6 +46,5 @@ jobs:
           name: lastID-file
           path: lastID.txt
 
-        
       - name: Run Script
         run: node src/main.js
