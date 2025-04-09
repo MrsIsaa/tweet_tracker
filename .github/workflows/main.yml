@@ -28,7 +28,7 @@ jobs:
           echo "WEBHOOK_URL=${{ secrets.WEBHOOK_URL }}" >> $GITHUB_ENV
           echo "ACCOUNT_ID=${{ secrets.ACCOUNT_ID }}" >> $GITHUB_ENV
 
-      - name: Create lastID.txt if not exists
+      - name: Create lastID.txt
         run: |
           if [ ! -f lastID.txt ]; then
             echo "null" > lastID.txt
@@ -46,7 +46,7 @@ jobs:
     
       - name: Debug
         run: |
-          echo "Listing current directory:"
+          echo "Current directory:"
           ls -l
           echo "Contents of lastID.txt:"
           cat lastID.txt || echo "lastID.txt not found"
