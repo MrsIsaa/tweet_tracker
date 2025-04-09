@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}" >> $GITHUB_ENV
           echo "WEBHOOK_URL=${{ secrets.WEBHOOK_URL }}" >> $GITHUB_ENV
-          echo "AUTHOR_ID=${{ secrets.AUTHOR_ID }}" >> $GITHUB_ENV
+          echo "ACCOUNT_ID=${{ secrets.ACCOUNT_ID }}" >> $GITHUB_ENV
 
       - name: Create lastID.txt if not exists
         run: |
