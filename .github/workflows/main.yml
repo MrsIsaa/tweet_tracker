@@ -7,10 +7,6 @@ on:
     - cron: '4 22 * * *'  # Runs at 10:35 PM UTC every day
     - cron: '25 5 * * *'
 
-env:
-  BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
-  WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-  ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
 
 jobs:
   run-script:
@@ -59,6 +55,11 @@ jobs:
 
       - name: Run Script
         run: node src/main.js
+        env:
+          BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
+
 
       - name: Upload lastID.txt with ID
         uses: actions/upload-artifact@v4
