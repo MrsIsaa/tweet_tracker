@@ -84,7 +84,7 @@ function sendTweet(tweet, includes) {
             console.log('⚠️ | [ Error while trying to send tweets ]: ', error.message)
         }  
 
-    }, 1000);
+    }, 2000);
 
 }
 
