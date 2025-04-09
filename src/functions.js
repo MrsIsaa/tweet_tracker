@@ -2,7 +2,7 @@ require('dotenv').config()
 const axios = require('axios');
 const fs = require('fs');
 
-// Your webhook URL should look something like https://discord.com/api/webhooks/id/token
+// Your webhook URL should look something like https://discord.com/api/webhooks/{id}/{token}
 
 /* 
     GET tweets from the account ID
@@ -50,8 +50,8 @@ async function getLatestTweets(id) {
         rate_limit = response.headers['x-rate-limit-remaining']
         const reset = response.headers['x-rate-limit-reset']*1000;
 
-        console.log(" [ Current requests available ]: " + rate_limit);
-        console.log(" [ Rate limit reset (Local Time) ]: in " + new Date(reset - Date.now()).getMinutes() + ` minutes. (${new Date((reset)).toLocaleTimeString()})`);
+        console.log("[ Current requests available ]: " + rate_limit);
+        console.log("[ Rate limit reset (Local Time) ]: in " + new Date(reset - Date.now()).getMinutes() + ` minutes. (${new Date((reset)).toLocaleTimeString()})`);
         
     } catch (error) {
         if(error.response) { 
