@@ -37,9 +37,11 @@ async function getLatestTweets(id) {
         if(!tweets || tweets.length == 0) return console.log("⚠️ | [ Error ]: Couldn't get tweets.");
         if(tweets[0].id == lastID) return console.log("⚠️ | No new tweets since last time.");
 
+        console.log(tweets)
+        console.log("Tweets reversed: ", tweets.reverse())
         const newTweets = tweets.slice(0, tweets.findIndex(tweet => tweet.id === lastID));
         updateID(newTweets[0].id);
-        newTweets.reverse();
+        console.log(newTweets)
 
         for(let i = 0; i < newTweets.length; i++) {
            await sendTweet(newTweets[i], includes);
