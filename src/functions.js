@@ -42,10 +42,10 @@ async function getLatestTweets(id) {
         
         const newTweets = tweets.slice(0, tweets.findIndex(tweet => tweet.id === lastID));
         updateID(newTweets[0].id);
-        const tweetsInOrder = newTweets.reverse();
+        // const tweetsInOrder = newTweets.reverse();
 
         for(let i = 0; i < newTweets.length; i++) {
-            sendTweet(tweetsInOrder[i], includes);
+            sendTweet(newTeets[i], includes);
             console.log(`✅ | [ Sent ]: new tweet No.${i + 1}`);
         }
 
