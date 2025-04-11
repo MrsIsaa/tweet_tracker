@@ -39,13 +39,13 @@ async function getLatestTweets(id) {
         if(!tweets || tweets.length == 0) return console.log("⚠️ | [ Error ]: Couldn't get tweets.");
         if(tweets[0].id == lastID) return console.log("⚠️ | No new tweets since last time.");
 
-        // tweets.reverse()
+        
         const newTweets = tweets.slice(0, tweets.findIndex(tweet => tweet.id === lastID));
         updateID(newTweets[0].id);
-        newTweets.reverse();
+        const tweetsInOrder = newTweets.reverse();
 
         for(let i = 0; i < newTweets.length; i++) {
-            sendTweet(newTweets[i], includes);
+            sendTweet(tweetsInOrder[i], includes);
             console.log(`✅ | [ Sent ]: new tweet No.${i + 1}`);
         }
 
