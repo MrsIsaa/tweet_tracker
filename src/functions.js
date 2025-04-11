@@ -1,7 +1,9 @@
+require('dotenv').config()
 const axios = require('axios');
-const fs = require('fs');
 
-// Your webhook URL should look something like https://discord.com/api/webhooks/{id}/{token}
+const { getID, updateID } = require('./firebase');
+
+// Your webhook URL should look something like https://discord.com/api/webhooks/id/token
 
 /* 
     GET tweets from the account ID
@@ -32,37 +34,40 @@ async function getLatestTweets(id) {
 
         const tweets = response.data.data;
         const includes = response.data.includes;
-        let lastID = getLastID();
+        let lastID = await getID();
 
         if(!tweets || tweets.length == 0) return console.log("⚠️ | [ Error ]: Couldn't get tweets.");
-       // if(tweets[0].id == lastID) return console.log("⚠️ | No new tweets since last time.");
+        if(tweets[0].id == lastID) return console.log("⚠️ | No new tweets since last time.");
 
-        console.log(tweets)
-        console.log("Tweets reversed: ", tweets.reverse())
+        // tweets.reverse()
         const newTweets = tweets.slice(0, tweets.findIndex(tweet => tweet.id === lastID));
         updateID(newTweets[0].id);
-        console.log(newTweets)
+        newTweets.reverse();
 
         for(let i = 0; i < newTweets.length; i++) {
-           await sendTweet(newTweets[i], includes);
+            sendTweet(newTweets[i], includes);
             console.log(`✅ | [ Sent ]: new tweet No.${i + 1}`);
         }
 
         rate_limit = response.headers['x-rate-limit-remaining']
         const reset = response.headers['x-rate-limit-reset']*1000;
 
-        console.log("[ Current requests available ]: " + rate_limit);
-        console.log("[ Rate limit reset (Local Time) ]: in " + new Date(reset - Date.now()).getMinutes() + ` minutes. (${new Date((reset)).toLocaleTimeString()})`);
+        console.log(" [ Current requests available ]: " + rate_limit);
+        console.log(" [ Rate limit reset (Local Time) ]: in " + new Date(reset - Date.now()).getMinutes() + ` minutes. (${new Date((reset)).toLocaleTimeString()})`);
         
     } catch (error) {
-        if(error.response) { 
+        if (error.response) {
             // \x1b[30;41m Red color
             // \x1b[0m Reset color
             console.log(`⚠️ | [ Error while trying to get tweets ]:`, `\x1b[37;41;4m${error.response.status} ${error.response.statusText}\x1b[0m`);
             console.log("⚠️ | [ Current requests available ]: " + error.response.headers['x-rate-limit-remaining']);
-            console.log("⚠️ | [ Rate limit reset (Local Time) ]: in " + new Date((error.response.headers['x-rate-limit-reset']*1000) - Date.now()).getMinutes() + ` minutes. (${new Date((error.response.headers['x-rate-limit-reset']*1000)).toLocaleTimeString()})`)
+            console.log("⚠️ | [ Rate limit reset (Local Time) ]: in " + new Date((error.response.headers['x-rate-limit-reset'] * 1000) - Date.now()).getMinutes() + ` minutes. (${new Date((error.response.headers['x-rate-limit-reset'] * 1000)).toLocaleTimeString()})`)
 
-        } else console.log(`⚠️ | [ Error while trying to get tweets ]:\n ${error.message}`);
+        } else {
+            console.log(`⚠️ | [ Error while trying to get tweets ]:\n`, error);
+            // console.log("⚠️ | [ Current requests available ]: " + response.headers['x-rate-limit-remaining']);
+            // console.log("⚠️ | [ Rate limit reset (Local Time) ]: in " + new Date((response.headers['x-rate-limit-reset'] * 1000) - Date.now()).getMinutes() + ` minutes. (${new Date((response.headers['x-rate-limit-reset'] * 1000)).toLocaleTimeString()})`)
+        }
     }
 
 }
@@ -85,7 +90,7 @@ function sendTweet(tweet, includes) {
             console.log('⚠️ | [ Error while trying to send tweets ]: ', error.message)
         }  
 
-    }, 2000);
+    }, 1000);
 
 }
 
@@ -100,7 +105,7 @@ function identifyTweetType(tweet, includes) {
     const username = getUsername(tweet, tweet.referenced_tweets[0], includes);
     const messages = {
         "retweeted": `Retweeted @${username}`,
-       // "replied_to": `Replying to @${username}`,
+        "replied_to": `Replying to @${username}`,
         "quoted": `Quoted @${username}`
     }
 
@@ -113,23 +118,10 @@ function identifyTweetType(tweet, includes) {
 */
 function getUsername(tweet, ref_tweet, includes) {
 
-   // const originalAuthorID = ref_tweet.type === "replied_to" ? tweet.in_reply_to_user_id : includes.tweets.find(tweet => tweet.id === ref_tweet.id)?.author_id;
-    const originalAuthorID = includes.tweets.find(tweet => tweet.id === ref_tweet.id)?.author_id;
-    
+    const originalAuthorID = ref_tweet.type === "replied_to" ? tweet.in_reply_to_user_id : includes.tweets.find(tweet => tweet.id === ref_tweet.id)?.author_id;
     const originalAuthorUsername = includes.users.find(user => user.id === originalAuthorID)?.username;
+
     return originalAuthorUsername || "unknown_user";
-}
-
-
-function updateID(id) {
-    fs.writeFileSync('lastID.txt', id);
-    return id;
-}
-
-
-function getLastID () {
-    if(!fs.existsSync('lastID.txt')) return null;
-    return fs.readFileSync('lastID.txt', 'utf-8').trim();
 }
 
 
