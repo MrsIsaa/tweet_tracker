@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 11 * * *'
     - cron: '0 14 * * *'
-    - cron: '50 4 * * *'
+    - cron: '50 16 * * *'
 
 jobs:
   run-script:
@@ -51,6 +51,14 @@ jobs:
           BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
           ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
+          API_KEY:  ${{ secrets.API_KEY}}
+          AUTH_DOMAIN:  ${{ secrets.AUTH_DOMAIN }}
+          DATABASE_URL:  ${{ secrets.DATABASE_URL }}
+          PROJECT_ID:  ${{ secrets.PROJECT_ID }}
+          STORAGE_BUCKET:  ${{ secrets.STORAGE_BUCKET }}
+          MESSAGING_SENDER_ID:  ${{ secrets.MESSAGING_SENDER_ID }}
+          APP_ID:  ${{ secrets.APP_ID }}
+          
 
 
       - name: Upload lastID.txt with ID
