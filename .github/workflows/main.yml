@@ -22,29 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Create lastID.txt
-        run: |
-          if [ ! -f lastID.txt ]; then
-            echo "null" > lastID.txt
-            echo "lastID.txt created with 'null'"
-          else
-            echo "lastID.txt already exists."
-          fi
-
-      - name: Get lastID artifact
-        uses: actions/download-artifact@v4
-        with: 
-          name: lastID-file
-        continue-on-error: true
-
-    
-      - name: Debug
-        run: |
-          echo "Current directory:"
-          ls -l
-          echo "Contents of lastID.txt:"
-          cat lastID.txt || echo "lastID.txt not found"
-
       - name: Run Script
         run: node src/main.js
         env:
@@ -59,12 +36,5 @@ jobs:
           MESSAGING_SENDER_ID:  ${{ secrets.MESSAGING_SENDER_ID }}
           APP_ID:  ${{ secrets.APP_ID }}
           
-
-
-      - name: Upload lastID.txt with ID
-        uses: actions/upload-artifact@v4
-        with:
-          name: lastID-file
-          path: lastID.txt
 
   
