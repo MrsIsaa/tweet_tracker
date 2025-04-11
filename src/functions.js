@@ -35,7 +35,7 @@ async function getLatestTweets(id) {
         let lastID = getLastID();
 
         if(!tweets || tweets.length == 0) return console.log("⚠️ | [ Error ]: Couldn't get tweets.");
-        if(tweets[0].id == lastID) return console.log("⚠️ | No new tweets since last time.");
+       // if(tweets[0].id == lastID) return console.log("⚠️ | No new tweets since last time.");
 
         console.log(tweets)
         console.log("Tweets reversed: ", tweets.reverse())
