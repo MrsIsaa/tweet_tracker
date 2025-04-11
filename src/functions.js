@@ -20,8 +20,8 @@ async function getLatestTweets(id) {
         },
         params: {
             max_results: 5,
-            "tweet.fields": "created_at,referenced_tweets,author_id,in_reply_to_user_id",
-            "expansions": "referenced_tweets.id.author_id,in_reply_to_user_id",
+            "tweet.fields": "created_at,referenced_tweets,author_id", // ,in_reply_to_user_id",
+            "expansions": "referenced_tweets.id.author_id", // ,in_reply_to_user_id",
             "user.fields": "username" 
         }
     }
@@ -100,7 +100,7 @@ function identifyTweetType(tweet, includes) {
     const username = getUsername(tweet, tweet.referenced_tweets[0], includes);
     const messages = {
         "retweeted": `Retweeted @${username}`,
-        "replied_to": `Replying to @${username}`,
+       // "replied_to": `Replying to @${username}`,
         "quoted": `Quoted @${username}`
     }
 
@@ -113,9 +113,9 @@ function identifyTweetType(tweet, includes) {
 */
 function getUsername(tweet, ref_tweet, includes) {
 
-    const originalAuthorID = ref_tweet.type === "replied_to" ? tweet.in_reply_to_user_id : includes.tweets.find(tweet => tweet.id === ref_tweet.id)?.author_id;
+   // const originalAuthorID = ref_tweet.type === "replied_to" ? tweet.in_reply_to_user_id : includes.tweets.find(tweet => tweet.id === ref_tweet.id)?.author_id;
     const originalAuthorUsername = includes.users.find(user => user.id === originalAuthorID)?.username;
-
+    const originalAuthorID = includes.tweets.find(tweet => tweet.id === ref_tweet.id)?.author_id;
     return originalAuthorUsername || "unknown_user";
 }
 
