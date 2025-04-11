@@ -1,15 +1,16 @@
 {
   "name": "twitterkoinegabot",
   "version": "1.0.0",
-  "description": "A Twitter bot that checks a specific twitter account every day at 7 and 10am EST (11am and 2pm UTC)",
+  "description": "A Twitter bot that checks a specific twitter account and send tweets to a discord channel through a webhook.",
   "main": "src/main.js",
   "scripts": {
     "test": "node src/main.js"
   },
-  "author": "MrsIsaa",
+  "author": "mrsIsaa",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.8.4",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "firebase": "^11.6.0"
   }
 }
